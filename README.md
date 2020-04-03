@@ -81,22 +81,127 @@ Cuando un conjunto de usuarios consulta un enésimo número (superior a 1000000)
 
 11. Una vez el cambio se vea reflejado, repita el paso 7, 8 y 9.
 12. Evalue el escenario de calidad asociado al requerimiento no funcional de escalabilidad y concluya si usando este modelo de escalabilidad logramos cumplirlo.
+
+Evalue el escenario de calidad asociado al requerimiento no funcional de escalabilidad y concluya si usando este modelo de escalabilidad logramos cumplirlo:  Escalabilidad:Cuando un conjunto de usuarios consulta un enésimo número (superior a 1000000) de la secuencia de Fibonacci de forma concurrente y el sistema se encuentra bajo condiciones normales de operación, todas las peticiones deben ser respondidas y el consumo de CPU del sistema no puede superar el 70% *rta: Si se cumplio el objetivo con la escalabilidad vertical, el consumo se redujo de un 95% aproximado a un 30% maximo segun las pruebas
 13. Vuelva a dejar la VM en el tamaño inicial para evitar cobros adicionales.
 
 **Preguntas**
 
-1. ¿Cuántos y cuáles recursos crea Azure junto con la VM?
+1. ¿Cuántos y cuáles recursos crea Azure junto con la VM
+
+    
+
+   ![](images/rec.png)
+   
+   Azure proporciona 6 recursos.
+   
+   * Interfaz de red.
+   * Dirección IP Pública.
+   * Disco.
+   * Red Virtual.
+   * Cuenta de almacenamiento.
+   * Grupo de Seguridad de la Red.
+   
 2. ¿Brevemente describa para qué sirve cada recurso?
-3. ¿Al cerrar la conexión ssh con la VM, por qué se cae la aplicación que ejecutamos con el comando `npm FibonacciApp.js`? ¿Por qué debemos crear un *Inbound port rule* antes de acceder al servicio?
+   * **Interfaz de Red**:  Las interfaces de red se utilizan para configurar direcciones IP, configuraciones de red virtual y servidores DNS que se asignarán a una máquina virtual. Microsoft Azure admite la conexión de múltiples interfaces de red (NIC) a una máquina virtual para una flexibilidad adicional en las opciones de conectividad de red.
+   * **Dirección IP Pública**: es una dirección IP dinámica o estática que puede asignar a máquinas virtuales, equilibradores de carga y puertas de enlace de red virtual para comunicarse con Internet. Sus direcciones IP públicas están asociadas con su suscripción de Azure y se pueden mover libremente entre los recursos de Azure.
+   * **Disco**: Cada máquina virtual de Azure está conectada a al menos un disco para el sistema operativo y el almacenamiento persistente. Un disco puede ser una unidad estándar (HDD) o premium (SSD). Los discos creados con este método solo se pueden usar con máquinas virtuales clásicas.
+   * **Red Virtual**: Azure Virtual Network (VNet) es el bloque de creación fundamental de una red privada en Azure. VNet permite muchos tipos de recursos de Azure, como Azure Virtual Machines (máquinas virtuales), para comunicarse de forma segura entre usuarios, con Internet y con las redes locales.
+   * **Cuenta de almacenamiento**: Azure Storage es un servicio administrado por Microsoft que proporciona almacenamiento en la nube altamente disponible, seguro, duradero, escalable y redundante.
+   * **Grupo de Seguridad de la Red**: Un grupo de seguridad de red es una capa de seguridad que actúa como un firewall virtual para controlar el tráfico de entrada y salida de máquinas virtuales (a través de interfaces de red) y subredes. Contiene un conjunto de reglas de seguridad que permiten o niegan el tráfico entrante y saliente utilizando las siguientes 5 tuplas: protocolo, rango de dirección IP de origen, rango de puerto de origen, rango de dirección IP de destino y rango de puerto de destino.
+   
+   
+3. ¿Al cerrar la conexión ssh con la VM, por qué se cae la aplicación que ejecutamos con el comando `npm FibonacciApp.js`? 
+   
+   El hecho de que accedamos a nuestra máquina mediante SSH significa que se establece una sesión que mantiene la
+   conexión y todos los procesos que se ejecuten durante esta sesión, por esta razón cuando se termina la conexión 
+   y se cierra la sesión también se terminan sus subprocesos.
+   
+¿Por qué debemos crear un *Inbound port rule* antes de acceder al servicio?
+
+   Es necesario para permitir el tráfico de la red a un número de puerto específico TCP o UDP perteneciente a la máquina        virtual
+
+   
 4. Adjunte tabla de tiempos e interprete por qué la función tarda tando tiempo.
+
+A0
+
+| N | T(Min) |
+| ------------- | ------------- |
+| 1000000 | 1.3 |
+| 1010000 | 1.3 |
+| 1020000 | 1.6    |
+| 1030000 | 1.4    |
+| 1040000 |  1.4   |
+| 1050000 | 1.5    |
+| 1060000 |   1.5  |
+| 1070000 |  1.5   |
+| 1080000 |  1.6   |
+| 1090000 |  1.6   |
+
+A6
+
+| N | T(S) |
+| ------------- | ------------- |
+| 1000000 | 50.63 |
+| 1010000 | 51.68 |
+| 1020000 | 53.42    |
+| 1030000 | 53.91    |
+| 1040000 |  55.38   |
+| 1050000 | 56.99    |
+| 1060000 |   56.99  |
+| 1070000 |  58.50   |
+| 1080000 |  58.62   |
+| 1090000 |  1.0  |
+
+
 5. Adjunte imágen del consumo de CPU de la VM e interprete por qué la función consume esa cantidad de CPU.
+   
+   A0
+   
+   ![](Soluciones/Punto8/A0/total1.png)
+   
+   A6
+   
+   ![](Soluciones/Punto8/A6/resultadoFinal.png)
+   
+   
+   Fibonacci es un tipo de algoritmo que llega a ser un pesado  para el trabajo que ejerce procesador, al implementar la función sin ningún tipo  memorización y sobre un procesador de bajas especificaciones, el consumo de este componente aumenta.
+
 6. Adjunte la imagen del resumen de la ejecución de Postman. Interprete:
     * Tiempos de ejecución de cada petición.
     * Si hubo fallos documentelos y explique.
+    
+    A0
+    
+    ![](Soluciones/Punto9/PruebasA0/prueba1.png)
+    
+    A6
+    
+    ![](Soluciones/Punto9/PruebasA6/prueba1.png)
+    
+    
+    ![](Soluciones/Punto9/PruebasA6/resultado.png)
+    
+    
+  
 7. ¿Cuál es la diferencia entre los tamaños `B2ms` y `B1ls` (no solo busque especificaciones de infraestructura)?
+   
+  
 8. ¿Aumentar el tamaño de la VM es una buena solución en este escenario?, ¿Qué pasa con la FibonacciApp cuando cambiamos el tamaño de la VM?
+
+ Para este escenario puede ser una buena solución si se desea aumentar la cantidad de peticiones que se pueden realizar concurrentemente al servidor, sin embargo, si se desea aumentar el tiempo de respuesta, se debe buscar una mejor manera de implementar la aplicación FibonacciApp.js.
+ 
+ Si se cambia el tamaño de la VM deja de funcionar la app.
+
 9. ¿Qué pasa con la infraestructura cuando cambia el tamaño de la VM? ¿Qué efectos negativos implica?
+
+   Cuando se cambia el tamaño de la máquina virtual implica que esta se tenga que reiniciar, por lo que la aplicación se        tiene y la disponibilidad disminuye. Al iniciar la máquina se debe volver a empezar el servicio de FibonacciApp.
+   
 10. ¿Hubo mejora en el consumo de CPU o en los tiempos de respuesta? Si/No ¿Por qué?
+
+Hubo mejora en el consumo de CPU, respecto a los tiempos hubo un cambio con ambos discos. La mejora se debe a que el disco tiene mayor capacidad de procesamientdos lo que permite que las conexiones no se cierren y la aplicación soporte más cálculos por segundo.
+
 11. Aumente la cantidad de ejecuciones paralelas del comando de postman a `4`. ¿El comportamiento del sistema es porcentualmente mejor?
 
 ### Parte 2 - Escalabilidad horizontal
