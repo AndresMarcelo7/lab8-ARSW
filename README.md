@@ -402,6 +402,7 @@ La tasa de éxito de las peticiones aumentó con este estilo de escalabilidad de
 
 **Presente el Diagrama de Despliegue de la solución.**
 
+![](images/part2/despliegue.png)
 
 
 
