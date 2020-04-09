@@ -355,6 +355,50 @@ Su propósito es filtrar el tráfico de red hacia y desde los recursos Azure en 
 
 **Informe de newman 1 (Punto 2)**
 
+**Resultados** 
+
+![](images/part2/resultadospt2.png)
+
+**CUADRO COMPARATIVO CON RESPECTO A LOS DOS TIPOS DE ESCALABILIDAD**
+
+| **ITEM**| **Escalibilidad Vertical** |**Escalabilidad Horizontal** |
+| ------------- | ------------- |--------------|
+| **REGION** | West US | East US |
+| **OS** |  Linux| Linux |
+| **TYPE** |  Ubuntu  | Ubuntu |
+| **TIER** | Standard| Standard |
+| **INSTANCE** |  A0 | B1LS|
+| **VM QUANTITY** | 1  | 4 |
+| **HOURS** |  730 | 730 |
+| **DISK TIER** | Standard SSD   | SSD PREMIUM |
+|**# Succesfull Requests** |20|20|
+| **TOTAL**| $14,80/month | $15,18/month|
+
+**INFORME PUNTO 3**
+
+**RESULTADOS DE LAS 4 EJECUCIONES EN PARALELO**
+
+![](images/part2/rta2-3.png)
+
+**VM1**
+
+![](images/part2/vm1.png)
+
+**VM2**
+
+![](images/part2/vm2.png)
+
+**VM3**
+
+![](images/part2/vm3.png)
+
+**VM4**
+
+![](images/part2/vm4.png)
+
+
+La tasa de éxito de las peticiones aumentó con este estilo de escalabilidad debido a que el balanceador de carga permite equilibrar el número de peticiones que recibe la aplicación con respecto a las cuatro máquinas virtuales desplegadas, dejando que estas calculen los resultados de las peticiones sin sobrecargarse.
+
 
 **Presente el Diagrama de Despliegue de la solución.**
 
